@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Current time</title>
+    <link rel="icon" href="./assets/images/favicon.svg" />
+    <link rel="stylesheet" href="./assets/stylesheets/design-tokens.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.9/dayjs.min.js"></script>
+    <style>
+      * {
+        user-select: none;
+      }
+      html {
+        font-size: 24px;
+      }
+      body {
+        margin: 0;
+        background-color: var(--md-sys-color-surface);
+      }
+      p {
+        margin: 0;
+      }
+      .container {
+        width: max-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1.5rem;
+        padding: 2rem 2rem;
+        border-radius: 1.75rem;
+        background-color: var(--md-sys-color-surface-container-high);
+        box-shadow: var(--md-sys-elevation-level3);
+      }
+      .time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--md-sys-color-on-surface);
+      }
+      .separator {
+        height: 5rem;
+        width: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #hour, #minute {
+        height: 5rem;
+        width: 6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border-radius: .5rem;
+        background-color: var(--md-sys-color-surface-container-highest);
+        overflow: hidden;
+      }
+      .period {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: .5rem;
+        color: var(--md-sys-color-on-surface-variant);
+        background-color: var(--md-sys-color-surface-container-high);
+        outline: .0625rem solid var(--md-sys-color-outline);
+        outline-offset: -.0625rem;
+        overflow: hidden;
+      }
+      #am, #pm {
+        height: 2.375rem;
+        width: 6.75rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+      }
+      #am {
+        border-inline-end: .03125rem solid var(--md-sys-color-outline);
+      }
+      #pm {
+        border-inline-start: .03125rem solid var(--md-sys-color-outline);
+      }
+      :is(#am, #pm).period-active {
+        color: var(--md-sys-color-on-tertiary-container);
+        background-color: var(--md-sys-color-tertiary-container);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="time md-sys-typescale-display-large">
+        <p id="hour">00</p>
+        <span class="separator">:</span>
+        <p id="minute">00</p>
+      </div>
+      <div class="period md-sys-typescale-title-medium">
+        <p id="am">AM</p>
+        <p id="pm">PM</p>
+      </div>
+    </div>
+    <script>
+      const hourElement = document.getElementById('hour');
+      const minuteElement = document.getElementById('minute');
+      const amElement = document.getElementById('am');
+      const pmElement = document.getElementById('pm');
+
+      const updateTime = () => {
+        const currentTime = dayjs(new Date());
+
+        hourElement.innerHTML = currentTime.format('hh');
+        minuteElement.innerHTML = currentTime.format('mm');
+        if (currentTime.format('HH') < 12) {
+          amElement.classList.add('period-active');
+          pmElement.classList.remove('period-active');
+        } else {
+          amElement.classList.remove('period-active');
+          pmElement.classList.add('period-active');
+        }
+      };
+
+      updateTime();
+      setInterval(updateTime, 1000);
+    </script>
+  </body>
+</html>
